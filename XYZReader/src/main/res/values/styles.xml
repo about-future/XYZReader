@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!-- File created by the Android Action Bar Style Generator
 
      Copyright (C) 2012 readyState Software Ltd
@@ -23,8 +24,7 @@
         <item name="colorAccent">@color/theme_accent</item>
     </style>
 
-
-    <style name="Theme.Bacon.WithTitle" parent="@style/Theme.Bacon">
+    <style name="Theme.Bacon.WithLogo" parent="@style/Theme.Bacon">
         <item name="displayOptions">useLogo</item>
         <item name="logo">@drawable/logo</item>
     </style>
@@ -35,19 +35,20 @@
         <item name="android:windowFullscreen">true</item>
     </style>
 
-    <style name="TextAppearance.Condensed" parent="Theme.AppCompat">
+    <style name="Condensed">
         <item name="android:fontFamily">sans-serif-condensed</item>
-        <item name="android:windowTitleSize">34sp</item>
+        <item name="android:windowTitleSize">@dimen/detail_title_text_size</item>
         <item name="android:textColor">#fff</item>
     </style>
 
-    <style name="TextAppearance.Condensed.Small" parent="Theme.AppCompat">
+    <style name="Condensed.Small">
         <item name="android:fontFamily">sans-serif-condensed</item>
-        <item name="android:windowTitleSize">18sp</item>
+        <item name="android:windowTitleSize">@dimen/detail_small_title_text_size</item>
+        <item name="android:textColor">#fff</item>
     </style>
 
     <!--<style name="Theme.Bacon.Detail">-->
-        <!--<item name="android:statusBarColor">@android:color/transparent</item>-->
+    <!--<item name="android:statusBarColor">@android:color/transparent</item>-->
     <!--</style>-->
 
 </resources>

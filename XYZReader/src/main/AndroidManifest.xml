@@ -19,8 +19,7 @@
         <activity
             android:name=".ui.ArticleListActivity"
             android:label="@string/app_name"
-            android:launchMode="singleTop"
-            android:theme="@style/Theme.Bacon.WithTitle">
+            android:theme="@style/Theme.Bacon.WithLogo">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -30,6 +29,7 @@
         <activity
             android:name=".ui.ArticleDetailActivity"
             android:parentActivityName=".ui.ArticleListActivity"
+            android:label="String"
             android:theme="@style/Theme.Bacon">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

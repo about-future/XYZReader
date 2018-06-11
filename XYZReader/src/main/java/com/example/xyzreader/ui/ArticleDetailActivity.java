@@ -103,6 +103,8 @@ public class ArticleDetailActivity extends AppCompatActivity
             }
             mStartId = 0;
         }
+
+        //TODO: test backButton here
     }
 
     @Override

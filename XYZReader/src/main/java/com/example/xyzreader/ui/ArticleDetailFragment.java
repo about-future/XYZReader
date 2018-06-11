@@ -17,6 +17,7 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ShareCompat;
 import android.support.v7.app.ActionBar;
@@ -52,6 +53,7 @@ public class ArticleDetailFragment extends Fragment implements
     private Cursor mCursor;
     private long mItemId;
     private View mRootView;
+    private CollapsingToolbarLayout mCollapsingToolbarLayout;
     private int mMutedColor = 0xFF333333;
     private ColorDrawable mStatusBarColorDrawable;
     private ImageView mPhotoView;
@@ -59,7 +61,7 @@ public class ArticleDetailFragment extends Fragment implements
     private int mScrollY;
     private Toolbar toolbar;
     private ActionBar actionBar;
-    private boolean mIsCard = false;
+    //private boolean mIsCard = false;
     private int mStatusBarFullOpacityBottom;
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss", Locale.US);
@@ -104,8 +106,6 @@ public class ArticleDetailFragment extends Fragment implements
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        //getActivityCast().setTitle("Test 2");
-
         // In support library r8, calling initLoader for a fragment in a FragmentPagerAdapter in
         // the fragment's onCreate may cause the same LoaderManager to be dealt to multiple
         // fragments because their mIndex is -1 (haven't been added to the activity yet). Thus,
@@ -120,8 +120,6 @@ public class ArticleDetailFragment extends Fragment implements
 
         toolbar = mRootView.findViewById(R.id.toolbar);
         getActivityCast().setSupportActionBar(toolbar);
-
-        //getActivityCast().setTitle("Test 1");
 
         if (getActivityCast().getSupportActionBar() != null) {
             actionBar = getActivityCast().getSupportActionBar();
@@ -160,7 +158,6 @@ public class ArticleDetailFragment extends Fragment implements
                     (int) (Color.blue(mMutedColor) * 0.9));
         }
         mStatusBarColorDrawable.setColor(color);
-        //TODO: check this mDrawInsetsFrameLayout.setInsetBackground(mStatusBarColorDrawable);
     }
 
     static float progress(float v, float min, float max) {
@@ -193,21 +190,16 @@ public class ArticleDetailFragment extends Fragment implements
             return;
         }
 
-        TextView titleView = mRootView.findViewById(R.id.article_title);
         TextView bylineView = mRootView.findViewById(R.id.article_byline);
         bylineView.setMovementMethod(new LinkMovementMethod());
-        TextView bodyView = mRootView.findViewById(R.id.article_body);
-
+        final TextView bodyView = mRootView.findViewById(R.id.article_body);
         bodyView.setTypeface(Typeface.createFromAsset(getResources().getAssets(), "Rosario-Regular.ttf"));
 
         if (mCursor != null) {
             mRootView.setAlpha(0);
             mRootView.setVisibility(View.VISIBLE);
             mRootView.animate().alpha(1);
-            titleView.setText(mCursor.getString(ArticleLoader.Query.TITLE));
 
-//            if (getActivity().getActionBar() != null)
-//                getActivity().getActionBar().setTitle("Test 3");
             toolbar.setTitle(mCursor.getString(ArticleLoader.Query.TITLE));
 
             Date publishedDate = parsePublishedDate();
@@ -227,20 +219,38 @@ public class ArticleDetailFragment extends Fragment implements
                         outputFormat.format(publishedDate) + " by <font color='#ffffff'>"
                         + mCursor.getString(ArticleLoader.Query.AUTHOR)
                                 + "</font>"));
-
             }
-            bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n)", "<br />")));
+
+            bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).substring(0, 2000).replaceAll("\r\n\r\n", "<br /><br />").replaceAll("\r\n", " ").replaceAll("  ", "")));
+            bodyView.append(getString(R.string.ellipsis));
+
+            final TextView readMoreTextView = mRootView.findViewById(R.id.read_more_tv);
+            readMoreTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    readMoreTextView.setVisibility(View.GONE);
+                    Log.v("Text", mCursor.getString(ArticleLoader.Query.BODY).replaceAll("\r\n\r\n", "<br /><br />").replaceAll("\r\n", " ").replaceAll("  ", ""));
+                    bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("\r\n\r\n", "<br /><br />").replaceAll("\r\n", " ").replaceAll("  ", "")));
+                }
+            });
+
+            //TODO: prograss bar, button background,
+
             ImageLoaderHelper.getInstance(getActivity()).getImageLoader()
                     .get(mCursor.getString(ArticleLoader.Query.PHOTO_URL), new ImageLoader.ImageListener() {
                         @Override
                         public void onResponse(ImageLoader.ImageContainer imageContainer, boolean b) {
                             Bitmap bitmap = imageContainer.getBitmap();
                             if (bitmap != null) {
-                                Palette p = Palette.generate(bitmap, 12);
+                                Palette p = Palette.from(bitmap).maximumColorCount(12).generate(); //, 12);
                                 mMutedColor = p.getDarkMutedColor(0xFF333333);
                                 mPhotoView.setImageBitmap(imageContainer.getBitmap());
                                 mRootView.findViewById(R.id.meta_bar)
                                         .setBackgroundColor(mMutedColor);
+                                mCollapsingToolbarLayout = mRootView.findViewById(R.id.toolbar_layout);
+                                mCollapsingToolbarLayout.setContentScrimColor(mMutedColor);
+                                readMoreTextView.setTextColor(mMutedColor);
+
                                 updateStatusBar();
                             }
                         }
@@ -252,7 +262,6 @@ public class ArticleDetailFragment extends Fragment implements
                     });
         } else {
             mRootView.setVisibility(View.GONE);
-            titleView.setText("N/A");
             bylineView.setText("N/A" );
             bodyView.setText("N/A");
         }
