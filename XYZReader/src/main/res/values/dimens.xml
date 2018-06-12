@@ -8,7 +8,9 @@
 
     <dimen name="fab_elevation">6dp</dimen>
     <dimen name="fab_press_translation_z">12dp</dimen>
-    <dimen name="spacing">16dp</dimen>
     <dimen name="fab_margin">24dp</dimen>
+    <dimen name="spacing">16dp</dimen>
+    <dimen name="card_spacing">8dp</dimen>
+    <dimen name="card_margin">16dp</dimen>
 
 </resources>

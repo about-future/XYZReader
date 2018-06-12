@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="112dp"
         android:background="@color/theme_primary">
+        <!-- TODO: AppBar height for 600dp, check official card spacing -->
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/toolbar_layout"
@@ -23,7 +24,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:layout_gravity="bottom"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                app:contentInsetStart="@dimen/spacing"
+                app:contentInsetStart="@dimen/card_margin"
                 app:elevation="4dp"
                 app:layout_collapseMode="pin" />
 
@@ -34,21 +35,18 @@
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <!--<View-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="8dp"/>-->
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:paddingBottom="8dp" />
+            android:paddingStart="@dimen/card_margin"
+            android:paddingEnd="@dimen/card_margin"
+            android:paddingBottom="@dimen/card_margin"/>
 
     </android.support.v4.widget.SwipeRefreshLayout>
+
 
 </android.support.design.widget.CoordinatorLayout>
