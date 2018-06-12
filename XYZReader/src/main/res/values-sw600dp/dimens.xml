@@ -9,5 +9,6 @@
     <dimen name="spacing">24dp</dimen>
     <dimen name="card_spacing">12dp</dimen>
     <dimen name="card_margin">24dp</dimen>
+    <dimen name="main_appbar_height">224dp</dimen>
 
 </resources>

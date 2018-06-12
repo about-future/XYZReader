@@ -12,5 +12,6 @@
     <dimen name="spacing">16dp</dimen>
     <dimen name="card_spacing">8dp</dimen>
     <dimen name="card_margin">16dp</dimen>
+    <dimen name="main_appbar_height">112dp</dimen>
 
 </resources>

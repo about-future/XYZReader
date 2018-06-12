@@ -9,7 +9,7 @@
 
     <string name="app_logo">App logo</string>
     <string name="article_image">Article image</string>
-    <string name="refreshing">Refreshing articles&#8230;</string>
+    <string name="refreshing">Refreshing All Articles</string>
     <string name="read_more">Read More</string>
     <string name="ellipsis">&#8230;</string>
 
