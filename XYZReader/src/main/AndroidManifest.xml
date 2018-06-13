@@ -29,7 +29,6 @@
         <activity
             android:name=".ui.ArticleDetailActivity"
             android:parentActivityName=".ui.ArticleListActivity"
-            android:label="String"
             android:theme="@style/Theme.Bacon">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

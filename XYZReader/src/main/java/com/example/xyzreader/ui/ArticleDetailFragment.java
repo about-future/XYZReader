@@ -1,9 +1,6 @@
 package com.example.xyzreader.ui;
 
-import android.app.Fragment;
-import android.app.LoaderManager;
 import android.content.Intent;
-import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -17,10 +14,13 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.app.ShareCompat;
-import android.support.v7.app.ActionBar;
+import android.support.v4.content.Loader;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
@@ -30,6 +30,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -46,9 +47,8 @@ import com.example.xyzreader.data.ArticleLoader;
 public class ArticleDetailFragment extends Fragment implements
         LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = "ArticleDetailFragment";
-
     public static final String ARG_ITEM_ID = "item_id";
-    //private static final float PARALLAX_FACTOR = 1.25f;
+    public static final String ART_TITLE = "article_title";
 
     private Cursor mCursor;
     private long mItemId;
@@ -60,7 +60,6 @@ public class ArticleDetailFragment extends Fragment implements
     private int mTopInset;
     private int mScrollY;
     private Toolbar toolbar;
-    private ActionBar actionBar;
     //private boolean mIsCard = false;
     private int mStatusBarFullOpacityBottom;
 
@@ -68,7 +67,7 @@ public class ArticleDetailFragment extends Fragment implements
     // Use default locale format
     private SimpleDateFormat outputFormat = new SimpleDateFormat();
     // Most time functions can only handle 1902 - 2037
-    private GregorianCalendar START_OF_EPOCH = new GregorianCalendar(2,1,1);
+    private GregorianCalendar START_OF_EPOCH = new GregorianCalendar(2, 1, 1);
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -89,7 +88,7 @@ public class ArticleDetailFragment extends Fragment implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments().containsKey(ARG_ITEM_ID)) {
+        if (getArguments() != null && getArguments().containsKey(ARG_ITEM_ID)) {
             mItemId = getArguments().getLong(ARG_ITEM_ID);
         }
 
@@ -114,17 +113,13 @@ public class ArticleDetailFragment extends Fragment implements
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_article_detail, container, false);
 
         toolbar = mRootView.findViewById(R.id.toolbar);
+        toolbar.setTitle("");
         getActivityCast().setSupportActionBar(toolbar);
-
-        if (getActivityCast().getSupportActionBar() != null) {
-            actionBar = getActivityCast().getSupportActionBar();
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
 
         mPhotoView = mRootView.findViewById(R.id.photo);
 
@@ -134,9 +129,9 @@ public class ArticleDetailFragment extends Fragment implements
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(Intent.createChooser(ShareCompat.IntentBuilder.from(getActivity())
+                startActivity(Intent.createChooser(ShareCompat.IntentBuilder.from(getActivityCast())
                         .setType("text/plain")
-                        .setText("Some sample text")
+                        .setText(getString(R.string.article_reference) + toolbar.getTitle())
                         .getIntent(), getString(R.string.action_share)));
             }
         });
@@ -161,14 +156,14 @@ public class ArticleDetailFragment extends Fragment implements
     }
 
     static float progress(float v, float min, float max) {
-        return constrain((v - min) / (max - min), 0, 1);
+        return constrain((v - min) / (max - min));
     }
 
-    static float constrain(float val, float min, float max) {
-        if (val < min) {
-            return min;
-        } else if (val > max) {
-            return max;
+    static float constrain(float val) {
+        if (val < 0) {
+            return 0;
+        } else if (val > 1) {
+            return 1;
         } else {
             return val;
         }
@@ -200,7 +195,14 @@ public class ArticleDetailFragment extends Fragment implements
             mRootView.setVisibility(View.VISIBLE);
             mRootView.animate().alpha(1);
 
+            Toolbar toolbar = mRootView.findViewById(R.id.toolbar);
             toolbar.setTitle(mCursor.getString(ArticleLoader.Query.TITLE));
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    getActivityCast().onBackPressed();
+                }
+            });
 
             Date publishedDate = parsePublishedDate();
             if (!publishedDate.before(START_OF_EPOCH.getTime())) {
@@ -217,24 +219,21 @@ public class ArticleDetailFragment extends Fragment implements
                 // If date is before 1902, just show the string
                 bylineView.setText(Html.fromHtml(
                         outputFormat.format(publishedDate) + " by <font color='#ffffff'>"
-                        + mCursor.getString(ArticleLoader.Query.AUTHOR)
+                                + mCursor.getString(ArticleLoader.Query.AUTHOR)
                                 + "</font>"));
             }
 
             bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).substring(0, 2000).replaceAll("\r\n\r\n", "<br /><br />").replaceAll("\r\n", " ").replaceAll("  ", "")));
             bodyView.append(getString(R.string.ellipsis));
 
-            final TextView readMoreTextView = mRootView.findViewById(R.id.read_more_tv);
-            readMoreTextView.setOnClickListener(new View.OnClickListener() {
+            final Button readMoreButton = mRootView.findViewById(R.id.read_more_button);
+            readMoreButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    readMoreTextView.setVisibility(View.GONE);
-                    Log.v("Text", mCursor.getString(ArticleLoader.Query.BODY).replaceAll("\r\n\r\n", "<br /><br />").replaceAll("\r\n", " ").replaceAll("  ", ""));
+                    readMoreButton.setVisibility(View.GONE);
                     bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("\r\n\r\n", "<br /><br />").replaceAll("\r\n", " ").replaceAll("  ", "")));
                 }
             });
-
-            //TODO: prograss bar, button background,
 
             ImageLoaderHelper.getInstance(getActivity()).getImageLoader()
                     .get(mCursor.getString(ArticleLoader.Query.PHOTO_URL), new ImageLoader.ImageListener() {
@@ -249,7 +248,7 @@ public class ArticleDetailFragment extends Fragment implements
                                         .setBackgroundColor(mMutedColor);
                                 mCollapsingToolbarLayout = mRootView.findViewById(R.id.toolbar_layout);
                                 mCollapsingToolbarLayout.setContentScrimColor(mMutedColor);
-                                readMoreTextView.setTextColor(mMutedColor);
+                                readMoreButton.setTextColor(mMutedColor);
 
                                 updateStatusBar();
                             }
@@ -262,18 +261,19 @@ public class ArticleDetailFragment extends Fragment implements
                     });
         } else {
             mRootView.setVisibility(View.GONE);
-            bylineView.setText("N/A" );
+            bylineView.setText("N/A");
             bodyView.setText("N/A");
         }
     }
 
+    @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         return ArticleLoader.newInstanceForItemId(getActivity(), mItemId);
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor cursor) {
         if (!isAdded()) {
             if (cursor != null) {
                 cursor.close();
@@ -292,7 +292,7 @@ public class ArticleDetailFragment extends Fragment implements
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
         mCursor = null;
         bindViews();
     }

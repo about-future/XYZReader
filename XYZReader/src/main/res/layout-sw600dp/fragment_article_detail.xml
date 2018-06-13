@@ -106,17 +106,14 @@
                     android:textColorLink="@color/theme_accent"
                     android:textSize="@dimen/detail_body_text_size" />
 
-                <TextView
-                    android:id="@+id/read_more_tv"
+                <Button
+                    android:id="@+id/read_more_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/detail_body_bottom_margin"
                     android:layout_marginTop="@dimen/detail_metabar_vert_padding"
                     android:text="@string/read_more"
-                    android:textAllCaps="true"
                     android:textColor="@color/theme_primary"
-                    android:textSize="@dimen/detail_body_text_size"
-                    android:textStyle="bold"
                     android:visibility="visible" />
 
             </LinearLayout>
