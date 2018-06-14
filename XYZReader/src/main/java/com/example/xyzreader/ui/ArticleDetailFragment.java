@@ -48,7 +48,6 @@ public class ArticleDetailFragment extends Fragment implements
         LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = "ArticleDetailFragment";
     public static final String ARG_ITEM_ID = "item_id";
-    public static final String ART_TITLE = "article_title";
 
     private Cursor mCursor;
     private long mItemId;
