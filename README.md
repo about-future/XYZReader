@@ -14,19 +14,24 @@ Apply Material Design guidelines to an mobile application.
 Separate an interface into surfaces.
 Effectively use transitions and motion.
 
-### Screen Shots
-Phone Portrait |
---- |
-![](/screenshots/xyz_reader_phone1.jpg) |
 
-Phone Landscape |
+### Screen Shots
+
+#### Phone
+Portrait |
+--- |
+![Portrait](/screenshots/xyz_reader_phone1.jpg) |
+
+
+Landscape |
 --- |
 ![](/screenshots/xyz_reader_phone2.jpg) |
 
-Tablet - Portrait |
+#### Tablet
+Portrait |
 --- |
-![Tablet - Portrait](/screenshots/xyz_reader_tablet1.jpg) |
+![Portrait](/screenshots/xyz_reader_tablet1.jpg) |
 
-Tablet - Landscape |
+Landscape |
 --- |
-![Tablet - Landscape](/screenshots/xyz_reader_tablet2.jpg) |
+![Landscape](/screenshots/xyz_reader_tablet2.jpg) |
