@@ -17,21 +17,25 @@ Effectively use transitions and motion.
 
 ### Screen Shots
 
-#### Phone
-Portrait |
+### Phone
+#### Portrait
+
+Main Activity and Details |
 --- |
 ![Portrait](/screenshots/xyz_reader_phone1.jpg) |
 
+#### Landscape
+ Main Activity | Details 1 | Details 2 |
+--- | --- | --- |
+![](/screenshots/xyz_reader_main.png) | ![](/screenshots/xyz_reader_details1.png) | ![](/screenshots/xyz_reader_details2.png) |
 
-Landscape |
---- |
-![](/screenshots/xyz_reader_phone2.jpg) |
+### Tablet
+#### Portrait
+Main Activity | Details |
+--- | --- |
+![](/screenshots/xyz_reader_tablet1.jpg) | ![](/screenshots/xyz_reader_tablet1.jpg) | 
 
-#### Tablet
-Portrait |
---- |
-![Portrait](/screenshots/xyz_reader_tablet1.jpg) |
-
-Landscape |
---- |
-![Landscape](/screenshots/xyz_reader_tablet2.jpg) |
+#### Landscape
+Main Activity | Details 1 | Details 2 |
+--- | --- | --- |
+![](/screenshots/xyz_reader_tablet4.jpg) | ![](/screenshots/xyz_reader_tablet5.jpg) | ![](/screenshots/xyz_reader_tablet6.jpg) |
