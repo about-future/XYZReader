@@ -15,19 +15,18 @@ Separate an interface into surfaces.
 Effectively use transitions and motion.
 
 ### Screen Shots
-
-Phone - Portrait |
+Phone Portrait |
 --- |
-![Portrait](/screenshots/xyz_reader_phone1.jpg) |
+![](/screenshots/xyz_reader_phone1.jpg) |
 
-Phone - Landscape |
+Phone Landscape |
 --- |
-![Landscape](/screenshots/xyz_reader_phone2.jpg) |
+![](/screenshots/xyz_reader_phone2.jpg) |
 
 Tablet - Portrait |
 --- |
-![Portrait](/screenshots/xyz_reader_tablet1.jpg) |
+![Tablet - Portrait](/screenshots/xyz_reader_tablet1.jpg) |
 
 Tablet - Landscape |
 --- |
-![Landscape](/screenshots/xyz_reader_tablet2.jpg) |
+![Tablet - Landscape](/screenshots/xyz_reader_tablet2.jpg) |
